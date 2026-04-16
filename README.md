@@ -1,10 +1,10 @@
-# Movies API — Projeto Final
+#  Movies API — Projeto Final
 
 API REST completa para gerenciamento de filmes, construída com **Node.js**, **Express** e **SQLite**, com autenticação **JWT**, relacionamentos, filtros, paginação e validações robustas.
 
 ---
 
-## Tecnologias
+## ️ Tecnologias
 
 - **Node.js** + **Express** — servidor e rotas
 - **SQLite** (via `sql.js`) — banco de dados embutido
@@ -14,7 +14,7 @@ API REST completa para gerenciamento de filmes, construída com **Node.js**, **E
 
 ---
 
-## Instalação
+##  Instalação
 
 ```bash
 # 1. Clone o repositório
@@ -36,7 +36,7 @@ Acesse: `http://localhost:3000`
 
 ---
 
-## Banco de Dados
+## ️ Banco de Dados
 
 O banco SQLite é criado automaticamente com **22 filmes**, **8 gêneros**, **3 usuários** e **10 avaliações** no primeiro start.
 
@@ -61,7 +61,7 @@ reviews     → id, movie_id (FK), user_id (FK), score, comment, created_at
 
 ---
 
-## Autenticação JWT
+##  Autenticação JWT
 
 Rotas protegidas exigem o header:
 
@@ -77,22 +77,22 @@ O token é retornado no login/registro e expira em **7 dias**.
 
 ---
 
-## Endpoints
+##  Endpoints
 
 ### Auth
 
 | Método | Rota               | Auth | Descrição               |
 |--------|--------------------|------|-------------------------|
-| POST   | /api/auth/register | ❌   | Registrar novo usuário  |
-| POST   | /api/auth/login    | ❌   | Login (retorna token)   |
-| GET    | /api/auth/me       | ✅   | Dados do usuário logado |
+| POST   | /api/auth/register |    | Registrar novo usuário  |
+| POST   | /api/auth/login    |    | Login (retorna token)   |
+| GET    | /api/auth/me       |    | Dados do usuário logado |
 
 ### Filmes
 
 | Método | Rota              | Auth  | Descrição               |
 |--------|-------------------|-------|-------------------------|
-| GET    | /api/movies       | ❌    | Listar filmes           |
-| GET    | /api/movies/:id   | ❌    | Buscar filme por ID     |
+| GET    | /api/movies       |     | Listar filmes           |
+| GET    | /api/movies/:id   |     | Buscar filme por ID     |
 | POST   | /api/movies       | Admin | Criar filme             |
 | PUT    | /api/movies/:id   | Admin | Atualizar filme         |
 | DELETE | /api/movies/:id   | Admin | Deletar filme           |
@@ -101,8 +101,8 @@ O token é retornado no login/registro e expira em **7 dias**.
 
 | Método | Rota              | Auth  | Descrição               |
 |--------|-------------------|-------|-------------------------|
-| GET    | /api/genres       | ❌    | Listar gêneros          |
-| GET    | /api/genres/:id   | ❌    | Buscar gênero + filmes  |
+| GET    | /api/genres       |     | Listar gêneros          |
+| GET    | /api/genres/:id   |     | Buscar gênero + filmes  |
 | POST   | /api/genres       | Admin | Criar gênero            |
 | PUT    | /api/genres/:id   | Admin | Atualizar gênero        |
 | DELETE | /api/genres/:id   | Admin | Deletar gênero          |
@@ -111,14 +111,14 @@ O token é retornado no login/registro e expira em **7 dias**.
 
 | Método | Rota                                  | Auth    | Descrição                  |
 |--------|---------------------------------------|---------|----------------------------|
-| GET    | /api/movies/:movie_id/reviews         | ❌      | Listar avaliações do filme |
-| POST   | /api/movies/:movie_id/reviews         | ✅ User | Criar avaliação            |
-| PUT    | /api/movies/:movie_id/reviews/:id     | ✅ User | Atualizar avaliação        |
-| DELETE | /api/movies/:movie_id/reviews/:id     | ✅ User | Deletar avaliação          |
+| GET    | /api/movies/:movie_id/reviews         |       | Listar avaliações do filme |
+| POST   | /api/movies/:movie_id/reviews         |  User | Criar avaliação            |
+| PUT    | /api/movies/:movie_id/reviews/:id     |  User | Atualizar avaliação        |
+| DELETE | /api/movies/:movie_id/reviews/:id     |  User | Deletar avaliação          |
 
 ---
 
-## Filtros, Ordenação e Paginação — GET /api/movies
+##  Filtros, Ordenação e Paginação — GET /api/movies
 
 | Parâmetro    | Tipo    | Descrição                                  | Exemplo              |
 |--------------|---------|--------------------------------------------|----------------------|
@@ -138,9 +138,14 @@ O token é retornado no login/registro e expira em **7 dias**.
 GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&limit=5
 ```
 
+> ** Dica:** Por padrão a API retorna **10 filmes por página**. Para ver todos de uma vez, use `?limit=50`:
+> ```
+> GET /api/movies?limit=50
+> ```
+
 ---
 
-## Validações
+##  Validações
 
 **Filmes (POST/PUT):**
 - `title`: obrigatório, máx 200 chars
@@ -162,7 +167,7 @@ GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&li
 
 ---
 
-## Status Codes
+##  Status Codes
 
 | Código | Significado                            |
 |--------|----------------------------------------|
@@ -178,7 +183,7 @@ GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&li
 
 ---
 
-## Deploy (Render)
+##  Deploy (Render)
 
 1. Faça push do projeto para um repositório GitHub
 2. Acesse [render.com](https://render.com) → **New Web Service**
@@ -194,7 +199,7 @@ GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&li
 
 ---
 
-## 🧪 Estrutura do Projeto
+##  Estrutura do Projeto
 
 ```
 movies-api/
@@ -221,7 +226,53 @@ movies-api/
 
 ---
 
-## 👩‍💻 Autora
+##  Exemplos de Requisições
+
+### Login Admin — POST /api/auth/login
+![Login Admin](docs/loginadm.png)
+
+### Me — GET /api/auth/me
+![Me](docs/meuperfil.png)
+
+### Listar Filmes — GET /api/movies
+![Listar Filmes](docs/listartodos.png)
+
+### Busca por título — GET /api/movies?search=nolan
+![Busca](docs/buscatitulo.png)
+
+### Ordenar por nota — GET /api/movies?min_rating=9&sort_by=rating&sort_order=desc
+![Ordenar](docs/notas.png)
+
+### Buscar por ID — GET /api/movies/1
+![Por ID](docs/id.png)
+
+### ID inexistente — GET /api/movies/9999 (404)
+![404](docs/IDinexistente.png)
+
+### Criar filme — POST /api/movies (201)
+![Criar](docs/criarfilme.png)
+
+### Atualizar filme — PUT /api/movies/1
+![Atualizar](docs/atualizarfilmes.png)
+
+### Deletar filme — DELETE /api/movies/22
+![Deletar](docs/deletarfilmes.png)
+
+### Validacao — POST /api/movies (400)
+![Validacao](docs/validacao.png)
+
+### Sem token — POST /api/movies (401)
+![Sem token](docs/semtoken.png)
+
+### E-mail duplicado — POST /api/auth/register (409)
+![Email duplicado](docs/emailduplicado.png)
+
+### Deletar avaliacao — DELETE /api/movies/1/reviews/1
+![Deletar avaliacao](docs/deletaravaliacao.png)
+
+---
+
+## ‍ Autora
 
 **Sarah** — CS @ UniFil | CyberSecurity @ FIAP  
 GitHub: [@sarahmacacos](https://github.com/sarahmacacos)
