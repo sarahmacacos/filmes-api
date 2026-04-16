@@ -1,0 +1,467 @@
+{
+  "info": {
+    "name": "🎬 Movies API — Projeto Final",
+    "description": "Collection completa da Movies API com autenticação JWT, CRUD de filmes, gêneros e avaliações.\n\n**Passo 1:** Execute 'Login Admin' ou 'Register' para obter o token.\n**Passo 2:** O token é salvo automaticamente na variável `{{token}}`.\n**Passo 3:** Use as demais requisições normalmente.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "admin_token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Register — Novo usuário",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('token', data.data.token);",
+              "  pm.test('Usuário criado com sucesso', () => pm.response.to.have.status(201));",
+              "}"
+            ], "type": "text/javascript" }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria Silva\",\n  \"email\": \"maria@email.com\",\n  \"password\": \"senha123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "if (pm.response.code === 200) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('token', data.data.token);",
+              "  pm.collectionVariables.set('admin_token', data.data.token);",
+              "  pm.test('Login realizado', () => pm.response.to.have.status(200));",
+              "  pm.test('Token recebido', () => pm.expect(data.data.token).to.be.a('string'));",
+              "}"
+            ], "type": "text/javascript" }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@movies.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "if (pm.response.code === 200) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('token', data.data.token);",
+              "  pm.test('Login user realizado', () => pm.response.to.have.status(200));",
+              "}"
+            ], "type": "text/javascript" }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sarah@movies.com\",\n  \"password\": \"user123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Me — Meu perfil",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Register — Validação (campos faltando)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"invalido\"\n}" },
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎬 Movies",
+      "item": [
+        {
+          "name": "GET — Listar todos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/movies", "host": ["{{base_url}}"], "path": ["movies"] }
+          }
+        },
+        {
+          "name": "GET — Paginação (page 1, limit 5)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?page=1&limit=5",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "5" }]
+            }
+          }
+        },
+        {
+          "name": "GET — Busca por título/diretor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?search=nolan",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [{ "key": "search", "value": "nolan" }]
+            }
+          }
+        },
+        {
+          "name": "GET — Filtrar por gênero (Ficção Científica = 4)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?genre_id=4",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [{ "key": "genre_id", "value": "4" }]
+            }
+          }
+        },
+        {
+          "name": "GET — Filtrar por ano",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?year=2019",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [{ "key": "year", "value": "2019" }]
+            }
+          }
+        },
+        {
+          "name": "GET — Nota mínima + ordenar por rating desc",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?min_rating=9&sort_by=rating&sort_order=desc",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [
+                { "key": "min_rating", "value": "9" },
+                { "key": "sort_by", "value": "rating" },
+                { "key": "sort_order", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET — Filtrar por idioma",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?language=japonês",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [{ "key": "language", "value": "japonês" }]
+            }
+          }
+        },
+        {
+          "name": "GET — Combinado (search + genre + rating + sort + page)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies?min_rating=8&sort_by=rating&sort_order=desc&page=1&limit=10",
+              "host": ["{{base_url}}"], "path": ["movies"],
+              "query": [
+                { "key": "min_rating", "value": "8" },
+                { "key": "sort_by", "value": "rating" },
+                { "key": "sort_order", "value": "desc" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET — Buscar por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/movies/1", "host": ["{{base_url}}"], "path": ["movies", "1"] }
+          }
+        },
+        {
+          "name": "GET — ID inexistente (404)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/movies/9999", "host": ["{{base_url}}"], "path": ["movies", "9999"] }
+          }
+        },
+        {
+          "name": "POST — Criar filme (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Oppenheimer\",\n  \"original_title\": \"Oppenheimer\",\n  \"director\": \"Christopher Nolan\",\n  \"year\": 2023,\n  \"duration\": 180,\n  \"synopsis\": \"A história do físico J. Robert Oppenheimer e o desenvolvimento da bomba atômica.\",\n  \"rating\": 9.1,\n  \"genre_id\": 2,\n  \"language\": \"Inglês\",\n  \"country\": \"EUA/Reino Unido\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies", "host": ["{{base_url}}"], "path": ["movies"] }
+          }
+        },
+        {
+          "name": "POST — Validação (campos obrigatórios) 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Sem diretor\",\n  \"year\": 1800,\n  \"duration\": -5\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies", "host": ["{{base_url}}"], "path": ["movies"] }
+          }
+        },
+        {
+          "name": "POST — Sem token (401)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Teste\",\n  \"director\": \"Alguém\",\n  \"year\": 2024,\n  \"duration\": 90,\n  \"genre_id\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies", "host": ["{{base_url}}"], "path": ["movies"] }
+          }
+        },
+        {
+          "name": "PUT — Atualizar filme (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Dark Knight\",\n  \"director\": \"Christopher Nolan\",\n  \"year\": 2008,\n  \"duration\": 152,\n  \"genre_id\": 1,\n  \"rating\": 9.8,\n  \"synopsis\": \"Batman enfrenta o Coringa — uma atualização da sinopse.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies/1", "host": ["{{base_url}}"], "path": ["movies", "1"] }
+          }
+        },
+        {
+          "name": "DELETE — Deletar filme (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/movies/22", "host": ["{{base_url}}"], "path": ["movies", "22"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎭 Genres",
+      "item": [
+        {
+          "name": "GET — Listar todos os gêneros",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/genres", "host": ["{{base_url}}"], "path": ["genres"] }
+          }
+        },
+        {
+          "name": "GET — Gênero por ID (com filmes)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/genres/4", "host": ["{{base_url}}"], "path": ["genres", "4"] }
+          }
+        },
+        {
+          "name": "POST — Criar gênero (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Documentário\",\n  \"description\": \"Filmes baseados em fatos reais e registros documentais.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/genres", "host": ["{{base_url}}"], "path": ["genres"] }
+          }
+        },
+        {
+          "name": "PUT — Atualizar gênero (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ação\",\n  \"description\": \"Filmes com muito adrenalina, lutas e explosões épicas.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/genres/1", "host": ["{{base_url}}"], "path": ["genres", "1"] }
+          }
+        },
+        {
+          "name": "DELETE — Gênero com filmes (409 conflict)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/genres/1", "host": ["{{base_url}}"], "path": ["genres", "1"] }
+          }
+        },
+        {
+          "name": "DELETE — Gênero vazio (200 OK)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/genres/9", "host": ["{{base_url}}"], "path": ["genres", "9"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "GET — Listar avaliações do filme 1",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/movies/1/reviews", "host": ["{{base_url}}"], "path": ["movies", "1", "reviews"] }
+          }
+        },
+        {
+          "name": "GET — Avaliações com paginação",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/movies/1/reviews?page=1&limit=5",
+              "host": ["{{base_url}}"], "path": ["movies", "1", "reviews"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "5" }]
+            }
+          }
+        },
+        {
+          "name": "POST — Criar avaliação (User autenticado)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 10,\n  \"comment\": \"Um dos melhores filmes que já assisti! Nota máxima.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies/5/reviews", "host": ["{{base_url}}"], "path": ["movies", "5", "reviews"] }
+          }
+        },
+        {
+          "name": "POST — Score inválido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"score\": 15\n}" },
+            "url": { "raw": "{{base_url}}/movies/5/reviews", "host": ["{{base_url}}"], "path": ["movies", "5", "reviews"] }
+          }
+        },
+        {
+          "name": "PUT — Atualizar avaliação",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 8,\n  \"comment\": \"Revi o filme e mudei minha nota.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies/1/reviews/1", "host": ["{{base_url}}"], "path": ["movies", "1", "reviews", "1"] }
+          }
+        },
+        {
+          "name": "DELETE — Deletar avaliação",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/movies/1/reviews/1", "host": ["{{base_url}}"], "path": ["movies", "1", "reviews", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Erros e Validações",
+      "item": [
+        {
+          "name": "404 — Rota inexistente",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/nao-existe", "host": ["{{base_url}}"], "path": ["nao-existe"] }
+          }
+        },
+        {
+          "name": "401 — Token inválido",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer token_invalido_aqui" }],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "403 — User tentando criar filme (sem ser admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Bloqueado\",\n  \"director\": \"Alguém\",\n  \"year\": 2024,\n  \"duration\": 90,\n  \"genre_id\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/movies", "host": ["{{base_url}}"], "path": ["movies"] }
+          }
+        },
+        {
+          "name": "409 — E-mail duplicado",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin Duplicado\",\n  \"email\": \"admin@movies.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
+          }
+        }
+      ]
+    }
+  ]
+}

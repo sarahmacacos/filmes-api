@@ -1,0 +1,20 @@
+# Dependências
+node_modules/
+
+# Banco de dados (gerado automaticamente)
+*.db
+*.db-journal
+
+# Variáveis de ambiente (nunca sobe pro git!)
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
