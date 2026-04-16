@@ -1,10 +1,10 @@
-# 🎬 Movies API — Projeto Final
+# Movies API — Projeto Final
 
 API REST completa para gerenciamento de filmes, construída com **Node.js**, **Express** e **SQLite**, com autenticação **JWT**, relacionamentos, filtros, paginação e validações robustas.
 
 ---
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 - **Node.js** + **Express** — servidor e rotas
 - **SQLite** (via `sql.js`) — banco de dados embutido
@@ -14,7 +14,7 @@ API REST completa para gerenciamento de filmes, construída com **Node.js**, **E
 
 ---
 
-## 📦 Instalação
+## Instalação
 
 ```bash
 # 1. Clone o repositório
@@ -36,7 +36,7 @@ Acesse: `http://localhost:3000`
 
 ---
 
-## 🗄️ Banco de Dados
+## Banco de Dados
 
 O banco SQLite é criado automaticamente com **22 filmes**, **8 gêneros**, **3 usuários** e **10 avaliações** no primeiro start.
 
@@ -61,7 +61,7 @@ reviews     → id, movie_id (FK), user_id (FK), score, comment, created_at
 
 ---
 
-## 🔐 Autenticação JWT
+## Autenticação JWT
 
 Rotas protegidas exigem o header:
 
@@ -77,7 +77,7 @@ O token é retornado no login/registro e expira em **7 dias**.
 
 ---
 
-## 📡 Endpoints
+## Endpoints
 
 ### Auth
 
@@ -118,7 +118,7 @@ O token é retornado no login/registro e expira em **7 dias**.
 
 ---
 
-## 🔍 Filtros, Ordenação e Paginação — GET /api/movies
+## Filtros, Ordenação e Paginação — GET /api/movies
 
 | Parâmetro    | Tipo    | Descrição                                  | Exemplo              |
 |--------------|---------|--------------------------------------------|----------------------|
@@ -140,7 +140,7 @@ GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&li
 
 ---
 
-## ✅ Validações
+## Validações
 
 **Filmes (POST/PUT):**
 - `title`: obrigatório, máx 200 chars
@@ -162,7 +162,7 @@ GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&li
 
 ---
 
-## 📋 Status Codes
+## Status Codes
 
 | Código | Significado                            |
 |--------|----------------------------------------|
@@ -178,7 +178,7 @@ GET /api/movies?search=nolan&sort_by=year&sort_order=desc&min_rating=8&page=1&li
 
 ---
 
-## 🚀 Deploy (Render)
+## Deploy (Render)
 
 1. Faça push do projeto para um repositório GitHub
 2. Acesse [render.com](https://render.com) → **New Web Service**
