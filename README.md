@@ -269,10 +269,3 @@ movies-api/
 
 ### Deletar avaliacao — DELETE /api/movies/1/reviews/1
 ![Deletar avaliacao](docs/deletaravaliacao.png)
-
----
-
-## ‍ Autora
-
-**Sarah** — CS @ UniFil | CyberSecurity @ FIAP  
-GitHub: [@sarahmacacos](https://github.com/sarahmacacos)
