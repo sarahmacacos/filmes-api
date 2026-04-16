@@ -229,43 +229,43 @@ movies-api/
 ##  Exemplos de Requisições
 
 ### Login Admin — POST /api/auth/login
-![Login Admin](docs/loginadm.png)
+![Login Admin](fotos/loginadm.png)
 
 ### Me — GET /api/auth/me
-![Me](docs/meuperfil.png)
+![Me](fotos/meuperfil.png)
 
 ### Listar Filmes — GET /api/movies
-![Listar Filmes](docs/listartodos.png)
+![Listar Filmes](fotos/listartodos.png)
 
 ### Busca por título — GET /api/movies?search=nolan
-![Busca](docs/buscatitulo.png)
+![Busca](fotos/buscatitulo.png)
 
 ### Ordenar por nota — GET /api/movies?min_rating=9&sort_by=rating&sort_order=desc
-![Ordenar](docs/notas.png)
+![Ordenar](fotos/notas.png)
 
 ### Buscar por ID — GET /api/movies/1
-![Por ID](docs/id.png)
+![Por ID](fotos/id.png)
 
 ### ID inexistente — GET /api/movies/9999 (404)
-![404](docs/IDinexistente.png)
+![404](fotos/IDinexistente.png)
 
 ### Criar filme — POST /api/movies (201)
-![Criar](docs/criarfilme.png)
+![Criar](fotos/criarfilme.png)
 
 ### Atualizar filme — PUT /api/movies/1
-![Atualizar](docs/atualizarfilmes.png)
+![Atualizar](fotos/atualizarfilmes.png)
 
 ### Deletar filme — DELETE /api/movies/22
-![Deletar](docs/deletarfilmes.png)
+![Deletar](fotos/deletarfilmes.png)
 
 ### Validacao — POST /api/movies (400)
-![Validacao](docs/validacao.png)
+![Validacao](fotos/validacao.png)
 
 ### Sem token — POST /api/movies (401)
-![Sem token](docs/semtoken.png)
+![Sem token](fotos/semtoken.png)
 
 ### E-mail duplicado — POST /api/auth/register (409)
-![Email duplicado](docs/emailduplicado.png)
+![Email duplicado](fotos/emailduplicado.png)
 
 ### Deletar avaliacao — DELETE /api/movies/1/reviews/1
-![Deletar avaliacao](docs/deletaravaliacao.png)
+![Deletar avaliacao](fotos/deletaravaliacao.png)
